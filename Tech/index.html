@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="https://icons.iconarchive.com/icons/matthew-kelleigh/mac-town-vol2/32/Pine-Trees-icon.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goktug's Corner</title>
+    <style>
+        /* --- 1. CORE VARIABLES (The "Clean" Theme) --- */
+        :root {
+            --bg-color: #1d2021;       /* Gruvbox Dark */
+            --text-color: #ebdbb2;     /* Gruvbox Light */
+            --link-color: #8ec07c;     /* Aqua */
+            --sidebar-bg: #282828;     /* Lighter Grey */
+            --border: none;
+            --font: 'Courier New', monospace;
+            --width: 900px;
+            --display-retro: none;     /* Hides 90s elements by default */
+            --display-clean: block;    /* Shows clean elements by default */
+        }
+
+        /* --- 2. THE CHECKBOX HACK (The "90s" Theme) --- */
+        /* When #mode is checked, look at the sibling (.wrap) and redefine vars */
+        #mode:checked ~ .wrap {
+            --bg-color: #000080;       /* Win95 Blue */
+            --text-color: #00ff00;     /* Matrix Green */
+            --link-color: #ffff00;     /* Yellow */
+            --sidebar-bg: #010101;     /* Win95 Grey */
+            --border: 3px ridge #fff;  /* 3D Borders */
+            --font: "Times New Roman", serif;
+            --display-retro: block;    /* Show 90s elements */
+            --display-clean: none;     /* Hide clean elements */
+        }
+
+        /* --- 3. LAYOUT ENGINE --- */
+        body { margin: 0; padding: 0; background: #000; height: 100vh; overflow: hidden; }
+
+        /* The invisible checkbox that controls everything */
+        #mode { display: none; }
+
+        /* The main wrapper handles the background color */
+        .wrap {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font);
+            display: flex;
+
+            justify-content: flex-start;
+            align-items: flex-start;
+
+            height: 100vh;
+            width: 100vw;
+
+            box-sizing: border-box;
+            overflow-y: auto; /* Scroll happens here */
+            padding-top: 10px;
+            padding-left: 20px;
+        }
+
+        #container {
+            display: flex;
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+
+            border-left: var(--border);
+            border-right: var(--border);
+            background: var(--bg-color);
+        }
+
+        /* --- SIDEBAR --- */
+        nav {
+            width: 200px;
+            background: var(--sidebar-bg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: var(--border);
+            flex-shrink: 0;
+        }
+
+        nav ul { list-style: square; padding-left: 20px; }
+        nav li { margin-bottom: 10px; }
+        a { color: var(--link-color); text-decoration: none; }
+        a:hover { text-decoration: underline; background-color: var(--text-color); color: var(--bg-color); }
+
+        /* The Switch Button (It's a Label) */
+        .mode-btn {
+            margin-top: auto; /* Pushes to bottom */
+            /*border: 1px solid var(--text-color);*/
+            padding: 0px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .mode-btn:hover { background: var(--link-color); color: var(--bg-color); }
+
+        /* Dynamic Text inside the button */
+        .mode-btn::after { content: "Switch Style"; }
+        
+        /* --- CONTENT AREAS --- */
+        main { flex-grow: 1; padding: 30px; }
+        
+        /* Utility classes to hide/show content based on theme */
+        .retro-only { display: var(--display-retro); }
+        .clean-only { display: var(--display-clean); }
+
+        /* --- IMAGE BOX --- */
+        .img-box {
+            float: right;               /* Pushes it to the right */
+            margin-left: 20px;          /* Space between text and image */
+            margin-bottom: 10px;
+            width: 120px;               /* Fixed width for uniformity */
+    
+            /* Theming: Uses your existing variables */
+            border: 1px solid var(--text-color); 
+            padding: 5px;
+            background: var(--bg-color);
+        }
+
+        .img-box img {
+            width: 100%;                /* Image fills the box */
+            height: auto;
+            max-height: 100px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .img-box figcaption {
+            font-size: 0.8rem;
+            text-align: center;
+            padding-top: 5px;
+            margin-top: 5px;
+            border-top: 1px solid var(--text-color); /* Separator line */
+        }
+        li { 
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="checkbox" id="mode">
+
+    <div class="wrap">
+        <div id="container">
+            
+            <nav>
+                <h1 class="clean-only">Goktug's Homepage</h1>
+                <h1 class="retro-only">Goktug's homepage</h1>
+
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li>-----</li>
+                    <li><a href="#">Tech</a></li>
+                    <li><a href="../in_progress.html">Linux Setup</a></li>
+                    <li>-----</li>
+                    <li><a href="../in_progress.html">Workout</a></li>
+                    <li><a href="../in_progress.html">Music</a></li>
+                    <li>-----</li>
+                    <li><a href="../in_progress.html">Gallery</a></li>
+                    <li><a href="../Library/index.html">Library</a></li>
+                    <li><a href="../Links/index.html">Links</a></li>
+                    <li>-----</li>
+                    <li><a href="../Contact/index.html">Contact Me</a></li>
+                </ul>
+
+                <div class="retro-only" style="text-align: center; margin-top: 20px;">
+                    <img src="/home/goktug/Pictures/icon/gif_button/crackit.gif">
+                </div>
+
+                <label for="mode" class="mode-btn"></label>
+            </nav>
+
+            <main>
+                <h2 class="clean-only">Tech I Use</h2>
+                <h2 class="retro-only">Tech I Use</h2>
+
+                <p>I admire old devices, the way they have more analog controls, you know it makes you feel something physically. I'd like to switch to old stuff by time as i have the opportunity.</p>
+                <br>
+
+                <hr>
+
+                <h3>Laptops</h3>
+                <ul>
+                    <li><figure class="img-box">
+                            <img src="../images/thinkpad_r50e.png" alt="ThinkPad R50e" width="32" height="32">
+                            <figcaption>ThinkPad R50e</figcaption>
+                        </figure>
+                        <h4>ThinkPad R50e</h4>
+                        <p>I found it at a flea market in the fall of 2024 and paid 200 TL. It was working; only the battery was dead, but that is expected from such an old device. It had WinXP installed in it. I installed Linux, particularly <a href="https://lubuntu.me/">Lubuntu</a> at that time. Now it runs <a href="https://archlinux32.org/">Arch Linux 32</a>. Since it has a 32-bit CPU it is hard to make use of it. So I just use it to code, or view documents.</p>
+                    </li>
+                    <li><figure class="img-box">
+                            <img src="../images/casper_nirvana.png" alt="Casper Nirvana C500" width="32" height="32">
+                            <figcaption>Casper Nirvana C500</figcaption>
+                        </figure>
+                        <h4 id="old_laptop">Casper Nirvana c500</h4>
+                        <p>My good old laptop, it served me well and long. This was my first laptop, so i started tech stuff at this point. Actually, at the end of its lifetime it was struggling to keep up, this made me try Linux for the first time, thankfully. </p>
+                        <p>It currently sits in the closet because the charging port is broken and it is not removeable as it is soldered to the circuit. Since I haven't soldered before, I didn't want to attempt a fix. So one day it might come back to life...
+                        </p>
+                    </li>
+                    <li><figure class="img-box" style"width: 200px">
+                            <img src="../images/hp_victus.png" alt="HP Victus 15" width="32" height="32">
+                            <figcaption>HP Victus 15</figcaption>
+                        </figure>
+                        <h4>HP Victus 15</h4>
+                        <p>This is my main device that i work on daily.</p>
+                    </li>
+                </ul>
+
+                <br>
+                <hr>
+                <h3>Software</h3>
+                <ul>
+                    <li><figure class="img-box" >
+                            <img src="../images/linux_power.gif" alt="Linux Master" style="max-height: 200px;">
+                            <figcaption>Behold!</figcaption>
+                        </figure>
+                        <h4>Operating Systems</h4>
+                        <p>I don't "distro hop" but I changed the distro I use several times as I needed. Here is the reverse chronological order:</p>
+                        <ul class="history-list">
+                            <li>
+                                <h5><a href="https://fedoraproject.org/">- Fedora 42 (Current)</a></h5>
+                                <p>I moved to Fedora with a suggestion of my close friend (who I won't name for privacy). It is stable and packages are up-to-date. This is so far my favorite. And hey! Linus Torvalds uses it too.
+                                </p>
+                            </li>
+
+                            <li>
+                                <h5><a href="https://ubuntu.com/">- Ubuntu 25</a></h5>
+                                <p>I used it for a fair amount of time, and it was meh tbh. But the point I decided to move on was when I was working on my graduation project, I was using Python and virtual environments, but there was always a version mismatch; it kept happening as I kept solving. As soon as I finished the project I moved on.
+                                </p>
+                            </li>
+
+                            <li>
+                                <h5><a href="https://zorin.com/os/">- ZorinOS</a></h5>
+                                <p>When I was going to experience Linux for the first time, I did a little research and saw that people were suggesting ZorinOS because it's easy for beginners by being similar to Windows. I served me well, but over time I got used to Linux, got more familiar with using the terminal casually etc. I felt the urge to move on.
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><figure class="img-box" >
+                            <img src="../images/window.gif" alt="Window" style="max-height: 200px;">
+                            <figcaption>Manager</figcaption>
+                        </figure>
+                        <h4>Window Managers</h4>
+                        <p> The only issue about WMs is that, they are not full Desktop Environment, they lack some daemons or dependencies. This can cuase to act wierd, fail to stratup, or crash. For the fix, check the <a href="../index.html">Games<a>.
+                        </p>
+                        <ul class="history-list">
+                            <li><figure class="img-box" >
+                                    <img src="../images/dwm.png" alt="dwm">
+                                    <figcaption>dwm</figcaption>
+                                </figure>
+                                <h5><a href="https://dwm.suckless.org/">- dwm (Current)</a></h5>
+                                <p>This WM sucks less for real. You get a simple tiny version of it as a default, and you get to patch it and compile however you like. Actually check other <a href="https://suckless.org">suckless</a> tools, they all are great. <strong>"software that sucks less"</strong>
+                                </p>
+                            </li>
+
+                            <li>
+                                <h5><a href="https://i3wm.org/">- i3</a></h5>
+                                <p>i3wm was my first window manager. I found it When I was looking for lightweight solutions to be able to use <a href="#old_laptop">my old laptop</a>. i3wm looks and is simple and useful. I'd recommend using i3-gaps since you can put gaps between windows, that way it looks better. However it is not so customizable at some point that limits you, that is mainly why i don't use it currently otherwise it is perfect.
+                                </p>
+                            </li>
+                        </ul
+                    </li>
+                    <li><figure class="img-box" >
+                            <img src="../images/tools.gif" alt="Tools" style="max-height: 200px;">
+                            <figcaption>Useful tools here <<<</figcaption>
+                        </figure>
+                        <h4>Other Tools</h4>
+                        <p></p>
+                        <ul class="history-list">
+                            <li>
+                                <h5><a href="">- Terminal</a></h5>
+                                <p><strong style="text-decoration: underline;">st:</strong> A <a href="https://suckless.org">Suckless</a> tool. Same logic, customize as you wish and compile. pretty minimal.
+                                </p>
+                            </li>
+
+                            <li>
+                                <h5><a href="">- Browser</a></h5>
+                                <p><strong style="text-decoration: underline;">Brave:</strong> Features a built-in ad-blocker (which blocks trackers too) and a private Tor window.
+                                </p>
+                                <p><strong style="text-decoration: underline;">QuteBrowser:</strong> Is really comfortable if you are used to vim-like keybindings.
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+
+                    </li>
+                </ul>
+                    </p>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+</body>
+</html>
