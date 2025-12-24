@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="https://icons.iconarchive.com/icons/matthew-kelleigh/mac-town-vol2/32/Pine-Trees-icon.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goktug's Corner</title>
+    <style>
+        /* --- 1. CORE VARIABLES (The "Clean" Theme) --- */
+        :root {
+            --bg-color: #1d2021;       /* Gruvbox Dark */
+            --text-color: #ebdbb2;     /* Gruvbox Light */
+            --link-color: #8ec07c;     /* Aqua */
+            --sidebar-bg: #282828;     /* Lighter Grey */
+            --border: none;
+            --font: 'Courier New', monospace;
+            --width: 900px;
+            --display-retro: none;     /* Hides 90s elements by default */
+            --display-clean: block;    /* Shows clean elements by default */
+        }
+
+        /* --- 2. THE CHECKBOX HACK (The "90s" Theme) --- */
+        /* When #mode is checked, look at the sibling (.wrap) and redefine vars */
+        #mode:checked ~ .wrap {
+            --bg-color: #000080;       /* Win95 Blue */
+            --text-color: #00ff00;     /* Matrix Green */
+            --link-color: #ffff00;     /* Yellow */
+            --sidebar-bg: #010101;     /* Win95 Grey */
+            --border: 3px ridge #fff;  /* 3D Borders */
+            --font: "Times New Roman", serif;
+            --display-retro: block;    /* Show 90s elements */
+            --display-clean: none;     /* Hide clean elements */
+        }
+
+        /* --- 3. LAYOUT ENGINE --- */
+        body { margin: 0; padding: 0; background: #000; height: 100vh; overflow: hidden; }
+
+        /* The invisible checkbox that controls everything */
+        #mode { display: none; }
+
+        /* The main wrapper handles the background color */
+        .wrap {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font);
+            display: flex;
+
+            justify-content: flex-start;
+            align-items: flex-start;
+
+            height: 100vh;
+            width: 100vw;
+
+            box-sizing: border-box;
+            overflow-y: auto; /* Scroll happens here */
+            padding-top: 10px;
+            padding-left: 20px;
+        }
+
+        #container {
+            display: flex;
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+
+            border-left: var(--border);
+            border-right: var(--border);
+            background: var(--bg-color);
+        }
+
+        /* --- SIDEBAR --- */
+        nav {
+            width: 200px;
+            background: var(--sidebar-bg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: var(--border);
+            flex-shrink: 0;
+        }
+
+        nav ul { list-style: square; padding-left: 20px; }
+        nav li { margin-bottom: 10px; }
+        a { color: var(--link-color); text-decoration: none; }
+        a:hover { text-decoration: underline; background-color: var(--text-color); color: var(--bg-color); }
+
+        /* The Switch Button (It's a Label) */
+        .mode-btn {
+            margin-top: auto; /* Pushes to bottom */
+            /*border: 1px solid var(--text-color);*/
+            padding: 0px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .mode-btn:hover { background: var(--link-color); color: var(--bg-color); }
+
+        /* Dynamic Text inside the button */
+        .mode-btn::after { content: "Switch Style"; }
+
+        /* --- CONTENT AREAS --- */
+        main { flex-grow: 1; padding: 30px; }
+
+        /* Utility classes to hide/show content based on theme */
+        .retro-only { display: var(--display-retro); }
+        .clean-only { display: var(--display-clean); }
+
+        /* --- IMAGE BOX --- */
+        .img-box {
+            float: right;               /* Pushes it to the right */
+            margin-left: 20px;          /* Space between text and image */
+            margin-bottom: 10px;
+            width: 120px;               /* Fixed width for uniformity */
+
+            /* Theming: Uses your existing variables */
+            border: 1px solid var(--text-color);
+            padding: 5px;
+            background: var(--bg-color);
+        }
+
+        .img-box img {
+            width: 100%;                /* Image fills the box */
+            height: auto;
+            max-height: 100px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .img-box figcaption {
+            font-size: 0.8rem;
+            text-align: center;
+            padding-top: 5px;
+            margin-top: 5px;
+            border-top: 1px solid var(--text-color); /* Separator line */
+        }
+        li {
+            overflow: auto;
+        }
+
+        .changelog-list {
+        list-style: none;
+        padding: 0;
+        }
+
+        .changelog-list li {
+        margin-bottom: 12px;
+        }
+
+        .changelog-list .date {
+        font-family: monospace;
+        color: var(--link-color); /* Makes the date pop */
+        margin-right: 10px;
+        }
+
+        /* Style the link to look like a button or terminal command */
+        .read-more {
+        font-size: 0.8em;
+        margin-left: 8px;
+        text-decoration: none;
+        color: var(--text-color);
+        padding: 0 4px;
+        }
+
+        .read-more:hover {
+        background: var(--link-color);
+        color: var(--bg-color);
+        border-color: var(--link-color);
+        }
+    </style>
+</head>
+<body>
+
+    <input type="checkbox" id="mode">
+
+    <div class="wrap">
+        <div id="container">
+            
+            <nav>
+                <h1 class="clean-only">Goktug's Homepage</h1>
+                <h1 class="retro-only">Goktug's homepage</h1>
+                <figure class="img-box" style="float: center; border: none;">
+                    <img src="images/o_christmas.gif" width="128" height="128">
+                </figure>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li>-----</li>
+                    <li><a href="Tech/index.html">Tech</a></li>
+                    <li><a href="Linux/index.html">Linux Setup</a></li>
+                    <li>-----</li>
+                    <li><a href="Gym/index.html">Workout</a></li>
+                    <li><a href="Music/index.html#">Music</a></li>
+                    <li>-----</li>
+                    <li><a href="Gallery/index.html">Gallery</a></li>
+                    <li><a href="Lib/index.html">Library</a></li>
+                    <li><a href="Links/index.html">Links</a></li>
+                    <li>-----</li>
+                    <li><a href="Contact/index.html">Contact Me</a></li>
+                </ul>
+
+                <div class="retro-only" style="text-align: center; margin-top: 20px;">
+                    <img src="/home/goktug/Pictures/icon/gif_button/crackit.gif">
+                    <img src="/home/goktug/Pictures/icon/gif_button/000010.gif">
+                    <img src="/home/goktug/Pictures/icon/gif_button/bestvw.gif">
+                    <img src="/home/goktug/Pictures/icon/gif_button/gnu-linux.gif">
+                </div>
+
+                <label for="mode" class="mode-btn"></label>
+            </nav>
+
+            <main style="margin-left: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 80vh; justify-content: center;">
+
+                <figure class="img-box" style="float: none; border: none; width: 1000px">
+                    <img src="images/merry_christmas.gif" width="128" height="128">
+                    <img src="images/christmas_dec.gif" width="128" height="128">
+                    <br>
+                    <br>
+                    <br>
+                    <img src="images/tux_working.gif" width="128" height="128">
+                </figure>
+                <h1 class="clean-only">The Page You Are Seeking Is Under Development</h1>
+                <h1 class="retro-only">The Page You Are Seeking Is Under Development</h1>
+
+                <figure class="img-box" style="float: none; border: none; width: 1000px">
+                    <img src="images/here_we_are.gif" style="width: 100%; height: auto; max-height: unset;">
+                </figure>
+
+            </main>
+
+        </div>
+    </div>
+
+</body>
+</html>
