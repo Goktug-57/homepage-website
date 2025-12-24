@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="https://icons.iconarchive.com/icons/matthew-kelleigh/mac-town-vol2/32/Pine-Trees-icon.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goktug's Corner</title>
+    <style>
+        /* --- 1. CORE VARIABLES (The "Clean" Theme) --- */
+        :root {
+            --bg-color: #1d2021;       /* Gruvbox Dark */
+            --text-color: #ebdbb2;     /* Gruvbox Light */
+            --link-color: #8ec07c;     /* Aqua */
+            --sidebar-bg: #282828;     /* Lighter Grey */
+            --border: none;
+            --font: 'Courier New', monospace;
+            --width: 900px;
+            --display-retro: none;     /* Hides 90s elements by default */
+            --display-clean: block;    /* Shows clean elements by default */
+        }
+
+        /* --- 2. THE CHECKBOX HACK (The "90s" Theme) --- */
+        /* When #mode is checked, look at the sibling (.wrap) and redefine vars */
+        #mode:checked ~ .wrap {
+            --bg-color: #000080;       /* Win95 Blue */
+            --text-color: #00ff00;     /* Matrix Green */
+            --link-color: #ffff00;     /* Yellow */
+            --sidebar-bg: #010101;     /* Win95 Grey */
+            --border: 3px ridge #fff;  /* 3D Borders */
+            --font: "Times New Roman", serif;
+            --display-retro: block;    /* Show 90s elements */
+            --display-clean: none;     /* Hide clean elements */
+        }
+
+        /* --- 3. LAYOUT ENGINE --- */
+        body { margin: 0; padding: 0; background: #000; height: 100vh; overflow: hidden; }
+
+        /* The invisible checkbox that controls everything */
+        #mode { display: none; }
+
+        /* The main wrapper handles the background color */
+        .wrap {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font);
+            display: flex;
+
+            justify-content: flex-start;
+            align-items: flex-start;
+
+            height: 100vh;
+            width: 100vw;
+
+            box-sizing: border-box;
+            overflow-y: auto; /* Scroll happens here */
+            padding-top: 10px;
+            padding-left: 20px;
+        }
+
+        #container {
+            display: flex;
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+
+            border-left: var(--border);
+            border-right: var(--border);
+            background: var(--bg-color);
+        }
+
+        /* --- SIDEBAR --- */
+        nav {
+            width: 200px;
+            background: var(--sidebar-bg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: var(--border);
+            flex-shrink: 0;
+        }
+
+        nav ul { list-style: square; padding-left: 20px; }
+        nav li { margin-bottom: 10px; }
+        a { color: var(--link-color); text-decoration: none; }
+        a:hover { text-decoration: underline; background-color: var(--text-color); color: var(--bg-color); }
+
+        /* The Switch Button (It's a Label) */
+        .mode-btn {
+            margin-top: auto; /* Pushes to bottom */
+            /*border: 1px solid var(--text-color);*/
+            padding: 0px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .mode-btn:hover { background: var(--link-color); color: var(--bg-color); }
+
+        /* Dynamic Text inside the button */
+        .mode-btn::after { content: "Switch Style"; }
+        
+        /* --- CONTENT AREAS --- */
+        main { flex-grow: 1; padding: 30px; }
+        
+        /* Utility classes to hide/show content based on theme */
+        .retro-only { display: var(--display-retro); }
+        .clean-only { display: var(--display-clean); }
+
+        /* --- IMAGE BOX --- */
+        .img-box {
+            float: right;               /* Pushes it to the right */
+            margin-left: 20px;          /* Space between text and image */
+            margin-bottom: 10px;
+            width: 120px;               /* Fixed width for uniformity */
+    
+            /* Theming: Uses your existing variables */
+            border: 1px solid var(--text-color); 
+            padding: 5px;
+            background: var(--bg-color);
+        }
+
+        .img-box img {
+            width: 100%;                /* Image fills the box */
+            height: auto;
+            max-height: 100px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .img-box figcaption {
+            font-size: 0.8rem;
+            text-align: center;
+            padding-top: 5px;
+            margin-top: 5px;
+            border-top: 1px solid var(--text-color); /* Separator line */
+        }
+        li { 
+            overflow: auto;
+        }
+        .row {
+        display: flex;
+        flex-wrap: wrap;        /* Allows wrapping on small screens */
+        width: 100%;            /* Fills the container */
+        margin-top: 20px;
+        gap: 20px;              /* Space between columns */
+        justify-content: center; /* Keeps them centered */
+        }
+
+        /* The Column Itself */
+        .column {
+        flex: 1;                /* Grow to fill available space */
+        min-width: 300px;       /* If screen is thinner than 300px, stack them */
+        max-width: 48%;         /* Forces 2 columns (w/ gap) on big screens */
+
+        /* Aesthetics (Matches your theme) */
+        border: 5px solid var(--text-color);
+        padding: 15px;
+        text-align: center;       /* Content looks better left-aligned */
+        box-sizing: border-box; /* Ensures padding doesn't break width */
+        }
+
+        /* MOBILE OVERRIDE: Stack them perfectly on small screens */
+        @media screen and (max-width: 800px) {
+        .column {
+        max-width: 100%;    /* Force full width */
+        flex: 100%;
+        }
+        }
+    </style>
+</head>
+<body>
+
+    <input type="checkbox" id="mode">
+
+    <div class="wrap">
+        <div id="container">
+            
+            <nav>
+                <h1 class="clean-only">Goktug's Homepage</h1>
+                <h1 class="retro-only">Goktug's homepage</h1>
+
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li>-----</li>
+                    <li><a href="../Tech/index.html">Tech</a></li>
+                    <li><a href="../in_progress.html">Linux Setup</a></li>
+                    <li>-----</li>
+                    <li><a href="../in_progress.html">Workout</a></li>
+                    <li><a href="../in_progress.html">Music</a></li>
+                    <li>-----</li>
+                    <li><a href="../in_progress.html">Gallery</a></li>
+                    <li><a href="../Library/index.html">Library</a></li>
+                    <li><a href="#">Links</a></li>
+                    <li>-----</li>
+                    <li><a href="../Contact/index.html">Contact Me</a></li>
+                </ul>
+
+                <div class="retro-only" style="text-align: center; margin-top: 20px;">
+                    <img src="/home/goktug/Pictures/icon/gif_button/crackit.gif">
+                </div>
+
+                <label for="mode" class="mode-btn"></label>
+            </nav>
+
+            <main>
+                <figure class="img-box" style="float: none; border: none; width: 100%; display: flex; justify-content: center;">
+                    <img src="../images/chain.gif" width="128" height="128">
+                    <img src="../images/links.gif" width="128" height="128">
+                    <img src="../images/chain.gif" width="128" height="128">
+                    <br>
+                    <br>
+                    <br>
+                </figure>
+                <h2 class="clean-only" style="text-align: center">Useful Links</h2>
+                <h2 class="retro-only" style="text-align: center">Useful Links</h2>
+
+                <hr>
+                <div class="row">
+                    <div class="column">
+                        <h3>People</h3>
+                        <p>
+                            <a href="https://aydoganarslantash.com">Aydogan Arsantash</a><br>
+                            <a href="https://www.billdietrich.me/">Bill Dietrich</a><br>
+                            <a href="https://ericmurphy.xyz/">Eric Murphy</a><br>
+                            <a href="https://lukesmith.xyz/">Luke Smith</a><br>
+                        </p>
+                    </div>
+                    <div class="column">
+                        <h3>Art</h3>
+                        <p>
+                           <a href="https://artvee.com/c/landscape/">Artvee</a><br>
+                           <a href="https://www.nga.gov/">National Gallery of Art</a><br>
+                           <a href="https://gifcities.org/">GifCities</a><br>
+                        </p>
+                    </div>
+                    <div class="column">
+                        <h3>Blogs</h3>
+                        <p>
+                            <a href="https://cheapskatesguide.org/">Cheapskate</a><br>
+                            <a href="https://www.cozynet.org/">CozyNet Blog</a><br>
+                            <a href="https://manuelmoreale.com/">Manuel Moreale</a><br>
+                        </p>
+                    </div>
+                 </div>
+
+                <br>
+                <br>
+                <br>
+
+                <h2 class="clean-only" style="text-align: center">Downloads</h2>
+                <h2 class="retro-only" style="text-align: center">Downloads</h2>
+
+                <hr>
+                <div class="row">
+                    <div class="column">
+                        <h3>Software</h3>
+                        <p>
+                            <a href="https://suckless.org">Suckless</a><br>
+                            <a href="https://brave.com/download/">Brave</a><br>
+                            <a href="https://store.steampowered.com/about/">Steam</a><br>
+                            <a href="https://www.qbittorrent.org/download">qBittorrent</a><br>
+                            <a href="https://krita.org/en/">Krita</a><br>
+                            <a href="https://www.videolan.org/vlc/">VLC</a><br>
+                            <a href="https://mpv.io/">MPV</a><br>
+                            <a href="https://github.com/xyb3rt/sxiv">Sxiv</a><br>
+                            <a href="https://github.com/doomemacs/doomemacs">Doom Emacs</a><br>
+                            <a href="https://qutebrowser.org/"></a><br>
+                        </p>
+                    </div>
+                 </div>
+            </main>
+
+        </div>
+    </div>
+
+</body>
+</html>
