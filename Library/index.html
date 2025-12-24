@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="https://icons.iconarchive.com/icons/matthew-kelleigh/mac-town-vol2/32/Pine-Trees-icon.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goktug's Corner</title>
+    <style>
+        /* --- 1. CORE VARIABLES (The "Clean" Theme) --- */
+        :root {
+            --bg-color: #1d2021;       /* Gruvbox Dark */
+            --text-color: #ebdbb2;     /* Gruvbox Light */
+            --link-color: #8ec07c;     /* Aqua */
+            --sidebar-bg: #282828;     /* Lighter Grey */
+            --border: none;
+            --font: 'Courier New', monospace;
+            --width: 900px;
+            --display-retro: none;     /* Hides 90s elements by default */
+            --display-clean: block;    /* Shows clean elements by default */
+        }
+
+        /* --- 2. THE CHECKBOX HACK (The "90s" Theme) --- */
+        /* When #mode is checked, look at the sibling (.wrap) and redefine vars */
+        #mode:checked ~ .wrap {
+            --bg-color: #000080;       /* Win95 Blue */
+            --text-color: #00ff00;     /* Matrix Green */
+            --link-color: #ffff00;     /* Yellow */
+            --sidebar-bg: #010101;     /* Win95 Grey */
+            --border: 3px ridge #fff;  /* 3D Borders */
+            --font: "Times New Roman", serif;
+            --display-retro: block;    /* Show 90s elements */
+            --display-clean: none;     /* Hide clean elements */
+        }
+
+        /* --- 3. LAYOUT ENGINE --- */
+        body { margin: 0; padding: 0; background: #000; height: 100vh; overflow: hidden; }
+
+        /* The invisible checkbox that controls everything */
+        #mode { display: none; }
+
+        /* The main wrapper handles the background color */
+        .wrap {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font);
+            display: flex;
+
+            justify-content: flex-start;
+            align-items: flex-start;
+
+            height: 100vh;
+            width: 100vw;
+
+            box-sizing: border-box;
+            overflow-y: auto; /* Scroll happens here */
+            padding-top: 10px;
+            padding-left: 20px;
+        }
+
+        #container {
+            display: flex;
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+
+            border-left: var(--border);
+            border-right: var(--border);
+            background: var(--bg-color);
+        }
+
+        /* --- SIDEBAR --- */
+        nav {
+            width: 200px;
+            background: var(--sidebar-bg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: var(--border);
+            flex-shrink: 0;
+        }
+
+        nav ul { list-style: square; padding-left: 20px; }
+        nav li { margin-bottom: 10px; }
+        a { color: var(--link-color); text-decoration: none; }
+        a:hover { text-decoration: underline; background-color: var(--text-color); color: var(--bg-color); }
+
+        /* The Switch Button (It's a Label) */
+        .mode-btn {
+            margin-top: auto; /* Pushes to bottom */
+            /*border: 1px solid var(--text-color);*/
+            padding: 0px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .mode-btn:hover { background: var(--link-color); color: var(--bg-color); }
+
+        /* Dynamic Text inside the button */
+        .mode-btn::after { content: "Switch Style"; }
+        
+        /* --- CONTENT AREAS --- */
+        main { flex-grow: 1; padding: 30px; }
+        
+        /* Utility classes to hide/show content based on theme */
+        .retro-only { display: var(--display-retro); }
+        .clean-only { display: var(--display-clean); }
+
+        /* --- IMAGE BOX --- */
+        .img-box {
+            float: right;               /* Pushes it to the right */
+            margin-left: 20px;          /* Space between text and image */
+            margin-bottom: 10px;
+            width: 120px;               /* Fixed width for uniformity */
+    
+            /* Theming: Uses your existing variables */
+            border: 1px solid var(--text-color); 
+            padding: 5px;
+            background: var(--bg-color);
+        }
+
+        .img-box img {
+            width: 100%;                /* Image fills the box */
+            height: auto;
+            max-height: 100px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .img-box figcaption {
+            font-size: 0.8rem;
+            text-align: center;
+            padding-top: 5px;
+            margin-top: 5px;
+            border-top: 1px solid var(--text-color); /* Separator line */
+        }
+        li { 
+            overflow: auto;
+        }
+        .row {
+        display: flex;
+        flex-wrap: wrap;        /* Allows wrapping on small screens */
+        width: 100%;            /* Fills the container */
+        margin-top: 20px;
+        gap: 20px;              /* Space between columns */
+        justify-content: center; /* Keeps them centered */
+        }
+
+        /* The Column Itself */
+        .column {
+        flex: 1;                /* Grow to fill available space */
+        min-width: 300px;       /* If screen is thinner than 300px, stack them */
+        max-width: 48%;         /* Forces 2 columns (w/ gap) on big screens */
+
+        /* Aesthetics (Matches your theme) */
+        border: 5px solid var(--text-color);
+        padding: 15px;
+        text-align: center;       /* Content looks better left-aligned */
+        box-sizing: border-box; /* Ensures padding doesn't break width */
+        }
+
+        /* MOBILE OVERRIDE: Stack them perfectly on small screens */
+        @media screen and (max-width: 800px) {
+        .column {
+        max-width: 100%;    /* Force full width */
+        flex: 100%;
+        }
+        }
+                .bookshelf-grid {
+            display: grid;
+            /* Auto-fit: Fits as many 150px columns as possible, then wraps */
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        /* Individual Book Card */
+        .book-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px); /* Little pop effect */
+        }
+
+        /* The Cover Image */
+        .book-cover {
+            width: 100%;
+            height: 220px; /* Fixed height forces uniformity */
+            object-fit: cover;
+            border: 1px solid var(--text-color);
+            margin-bottom: 10px;
+            filter: grayscale(100%); /* B&W by default */
+            transition: filter 0.3s;
+        }
+
+        .book-card:hover .book-cover {
+            filter: grayscale(0%); /* Color on hover */
+        }
+
+        .book-title {
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+
+        .book-author {
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+
+        /* Status Tags (Reading/Finished) */
+        .status {
+            font-size: 0.7em;
+            margin-top: 5px;
+            padding: 2px 6px;
+            border: 1px solid var(--link-color);
+            color: var(--link-color);
+            text-transform: uppercase;
+        }
+        
+        .status.finished {
+            border-color: #666;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="checkbox" id="mode">
+
+    <div class="wrap">
+        <div id="container">
+            
+            <nav>
+                <h1 class="clean-only">Goktug's Homepage</h1>
+                <h1 class="retro-only">Goktug's homepage</h1>
+
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li>-----</li>
+                    <li><a href="../Tech/index.html">Tech</a></li>
+                    <li><a href="../in_progress.html">Linux Setup</a></li>
+                    <li>-----</li>
+                    <li><a href="../in_progress.html">Workout</a></li>
+                    <li><a href="../in_progress.html">Music</a></li>
+                    <li>-----</li>
+                    <li><a href="../in_progress.html">Gallery</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li><a href="../Links/index.html">Links</a></li>
+                    <li>-----</li>
+                    <li><a href="../Contact/index.html">Contact Me</a></li>
+                </ul>
+
+                <div class="retro-only" style="text-align: center; margin-top: 20px;">
+                    <img src="/home/goktug/Pictures/icon/gif_button/crackit.gif">
+                </div>
+
+                <label for="mode" class="mode-btn"></label>
+            </nav>
+
+            <main>
+                <h2>Reading Now</h2>
+                <div class="bookshelf-grid">
+                    <div class="book-card">
+                        <img src="https://covers.openlibrary.org/b/isbn/9781985086593-L.jpg" class="book-cover" alt="OSTEP">
+                        <span class="book-title">OSTEP</span>
+                        <span class="book-author">Arpaci-Dusseau</span>
+                        <span class="status">Reading</span>
+                    </div>
+
+                    <div class="book-card">
+                        <img src="https://covers.openlibrary.org/b/isbn/9781734640700-L.jpg" class="book-cover" alt="Carnivore Code">
+                        <span class="book-title">Carnivore Code</span>
+                        <span class="book-author">Paul Saladino</span>
+                        <span class="status">Reading</span>
+                    </div>
+                </div>
+
+                <br><br>
+
+                <h2>CS & Engineering</h2>
+                <div class="bookshelf-grid">
+                    <div class="book-card" style="opacity: 0.5; border: 1px dashed var(--text-color);">
+                        <div class="book-cover" style="display: flex; align-items: center; justify-content: center; background: #000;">
+                            <span style="font-size: 2em; color: var(--text-color);">+</span>
+                        </div>
+                        <span class="book-title">Add New</span>
+                    </div>
+
+                </div>
+
+                <br><br>
+
+                <h2>History & Philosophy</h2>
+                   <div class="bookshelf-grid">
+
+                   <div class="book-card">
+                       <img src="https://covers.openlibrary.org/b/isbn/9786055261658-L.jpg" class="book-cover">
+                       <span class="book-title">Kök Tengri'nin Çocukları</span>
+                       <span class="book-author">Ahmet Taşağıl</span>
+                       <span class="status finished">Finished</span>
+                   </div>
+
+                   <div class="book-card">
+                       <img src="https://covers.openlibrary.org/b/isbn/9786257631419-L.jpg" class="book-cover">
+                       <span class="book-title">İlk Türkler</span>
+                       <span class="book-author">Ahmet Taşağıl</span>
+                       <span class="status finished">Finished</span>
+                   </div>
+
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/21930833484415.jpg" class="book-cover">
+                        <span class="book-title">Eski Türk Tarihi</span>
+                        <span class="book-author">Ahmet Taşağıl</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/16766923484345.jpg" class="book-cover">
+                        <span class="book-title">Türklerin Tarihi</span>
+                        <span class="book-author">Jean-Paul Roux</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+
+                    <div class="book-card">
+                        <img src="https://img.kitapyurdu.com/v1/getImage/fn:1009699/wh:true/wi:800" class="book-cover">
+                        <span class="book-title">Sekiz Türk Boyu</span>
+                        <span class="book-author">Sencer Divitçioğlu</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/9535693485660.jpg" class="book-cover">
+                        <span class="book-title">Avrupa Tarihi</span>
+                        <span class="book-author">Önder Kaya</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/16222173488708.jpg" class="book-cover">
+                        <span class="book-title">The Art of War</span>
+                        <span class="book-author">Sun Tzu</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/9446133482761.jpg" class="book-cover" alt="">
+                        <span class="book-title">Sitting Kills, Moving Heals</span>
+                        <span class="book-author">Joan Vernikos</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+
+    </div>
+
+    <br><br>
+
+    <h2>Literature & Fiction</h2>
+    <div class="bookshelf-grid">
+
+        <div class="book-card">
+            <img src="https://covers.openlibrary.org/b/isbn/9789754378016-L.jpg" class="book-cover">
+            <span class="book-title">Deli Kurt</span>
+            <span class="book-author">H. Nihal Atsız</span>
+            <span class="status finished">Finished</span>
+        </div>
+
+        <div class="book-card">
+            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages-na.ssl-images-amazon.com%2Fimages%2FS%2Fcompressed.photo.goodreads.com%2Fbooks%2F1546233523i%2F11407007.jpg&f=1&nofb=1&ipt=75d0ab96b553ca8cc64079a19b132e180635f3c73aabb8a995c41eb4f4008d27" class="book-cover">
+            <span class="book-title">Bozkurtlar</span>
+            <span class="book-author">H. Nihal Atsız</span>
+            <span class="status finished">Finished</span>
+        </div>
+
+        <div class="book-card">
+            <img src="https://images.isbndb.com/covers/21919163483596.jpg" class="book-cover">
+            <span class="book-title">What Men Live By</span>
+            <span class="book-author">Leo Tolstoy</span>
+            <span class="status finished">Finished</span>
+        </div>
+
+        <div class="book-card">
+            <img src="https://images.isbndb.com/covers/26324923482723.jpg" class="book-cover">
+            <span class="book-title">White Fang</span>
+            <span class="book-author">Jack London</span>
+            <span class="status finished">Finished</span>
+        </div>
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/26669833482310.jpg" class="book-cover" alt="">
+                        <span class="book-title">Do Androids Dream of Electric Sheep?</span>
+                        <span class="book-author">Philip K. Dick</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+
+    </div>
+                <p>-----------------------------------------</p>
+                    <div class="book-card">
+                        <img src="" class="book-cover" alt="">
+                        <span class="book-title"></span>
+                        <span class="book-author"></span>
+                        <span class="status finished">Finished</span>
+                    </div>
+
+                <h2>Reading Now</h2>
+                
+                <div class="bookshelf-grid">
+                    
+                    <div class="book-card">
+                        <img src="https://covers.openlibrary.org/b/isbn/9781985086593-L.jpg" class="book-cover" alt="OSTEP">
+                        <span class="book-title">OSTEP</span>
+                        <span class="book-author">Arpaci-Dusseau</span>
+                        <span class="status">Reading</span>
+                    </div>
+
+                    <div class="book-card">
+                        <img src="https://covers.openlibrary.org/b/isbn/9781734640700-L.jpg" class="book-cover" alt="Carnivore Code">
+                        <span class="book-title">Carnivore Code</span>
+                        <span class="book-author">Paul Saladino</span>
+                        <span class="status">Reading</span>
+                    </div>
+
+                </div>
+
+                <br><br>
+
+                <h2>Archive</h2>
+                <div class="bookshelf-grid">
+                    
+                    <div class="book-card">
+                        <img src="https://covers.openlibrary.org/b/isbn/9786055261658-L.jpg" class="book-cover" alt="Lonesome Dove">
+                        <span class="book-title">Kok Tengri&apos;nin Cocuklari</span>
+                        <span class="book-author">Ahmet Tasagil</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+
+                    <div class="book-card">
+                        <img src="https://covers.openlibrary.org/b/isbn/9786257631419-L.jpg" class="book-cover" alt="">
+                        <span class="book-title">Ilk Turkler</span>
+                        <span class="book-author">Ahmet Tasagil</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/21930833484415.jpg" class="book-cover" alt="">
+                        <span class="book-title">Eski Turk Tarihi</span>
+                        <span class="book-author">Ahmet Tasagil</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://covers.openlibrary.org/b/isbn/9789754378016-L.jpg" class="book-cover" alt="">
+                        <span class="book-title">Deli Kurt</span>
+                        <span class="book-author">Huseyin Nihal Atsiz</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages-na.ssl-images-amazon.com%2Fimages%2FS%2Fcompressed.photo.goodreads.com%2Fbooks%2F1546233523i%2F11407007.jpg&f=1&nofb=1&ipt=75d0ab96b553ca8cc64079a19b132e180635f3c73aabb8a995c41eb4f4008d27" class="book-cover" alt="">
+                        <span class="book-title">Bozkurtlar</span>
+                        <span class="book-author">Huseyin Nihal Atsiz</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/9535693485660.jpg" class="book-cover" alt="">
+                        <span class="book-title">Avrupa Tarihi</span>
+                        <span class="book-author">Onder Kaya</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://img.kitapyurdu.com/v1/getImage/fn:1009699/wh:true/wi:800" class="book-cover" alt="">
+                        <span class="book-title">Sekiz Turk Boyu Uzerine Bazi Gozlemler</span>
+                        <span class="book-author">Sencer Divitcioglu</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/16766923484345.jpg" class="book-cover" alt="">
+                        <span class="book-title">Turklerin Tarihi</span>
+                        <span class="book-author">Jean-Paul Roux</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/16222173488708.jpg" class="book-cover" alt="">
+                        <span class="book-title">The Art of War Sun Tzu</span>
+                        <span class="book-author">Sun Tzu</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/21919163483596.jpg" class="book-cover" alt="">
+                        <span class="book-title">What Men Live By</span>
+                        <span class="book-author">Leo Tolstoy</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="https://images.isbndb.com/covers/26324923482723.jpg" class="book-cover" alt="">
+                        <span class="book-title">White Fang</span>
+                        <span class="book-author">Jack London</span>
+                        <span class="status finished">Finished</span>
+                    </div>
+                    <div class="book-card">
+                        <img src="" class="book-cover" alt="">
+                        <span class="book-title"></span>
+                        <span class="book-author"></span>
+                        <span class="status finished">Finished</span>
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+    </div>
+
+</body>
+</html>
